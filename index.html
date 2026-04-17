@@ -12,177 +12,195 @@
         .font-ar { font-family: 'Noto Kufi Arabic', sans-serif; }
         .font-en { font-family: 'Inter', sans-serif; }
         .card-shadow { box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04); }
+        body { background-color: #f4f7fa; transition: all 0.2s ease; overflow-x: hidden; }
+        .hidden { display: none !important; }
         
-        /* প্রাথমিক অবস্থা: পুরো কন্টেন্ট লক */
-        #main-app-wrapper { display: none; visibility: hidden; }
-        
-        /* ভেরিফিকেশন ওভারলে */
-        #verification-overlay {
-            position: fixed; inset: 0; background-color: #f4f7fa;
-            display: flex; align-items: center; justify-content: center; z-index: 9999;
+        /* Initial Lock: Hide content and footer */
+        #content-area, footer, .help-fab { display: none; }
+
+        /* Verification Box Center */
+        #verification-container {
+            min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 20px;
         }
 
-        body { background-color: #f4f7fa; overflow: hidden; } /* লোড হওয়ার সময় স্ক্রল বন্ধ */
-        .hidden { display: none !important; }
+        /* Mobile Overlay Menu */
+        #mobile-overlay {
+            position: fixed; inset: 0; background: white; z-index: 1000;
+            display: none; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+            text-align: center;
+        }
+        #mobile-overlay.active { display: flex; }
+        .menu-item { font-size: 16px; color: #475569; font-weight: 600; text-decoration: none; }
 
-        /* Floating Help Button */
+        @media (max-width: 767px) {
+            .mobile-hide { display: none !important; }
+            [dir="rtl"] .mobile-align { text-align: right !important; }
+            [dir="ltr"] .mobile-align { text-align: left !important; }
+            .status-badge { width: fit-content !important; display: inline-block !important; }
+            #contact-popup { width: calc(100% - 40px) !important; left: 20px !important; right: 20px !important; bottom: 85px !important; }
+        }
+        @media (min-width: 768px) {
+            .pc-flex { display: flex !important; }
+            .mobile-hamburger { display: none !important; }
+        }
+        .label-text { color: #64748b !important; font-weight: 500; }
+
         .help-fab {
             position: fixed; bottom: 25px; z-index: 3000;
             width: 58px; height: 58px; background-color: #1e3a8a;
             border: 4px solid #94a3b8; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; cursor: pointer;
+            color: white; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         [dir="rtl"] .help-fab { left: 25px; }
         [dir="ltr"] .help-fab { right: 25px; }
+
+        #contact-popup {
+            position: fixed; bottom: 95px; z-index: 3500;
+            width: 360px; max-height: 80vh; background: white;
+            border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            display: none; flex-direction: column; overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        #contact-popup.active { display: flex; }
+        [dir="rtl"] #contact-popup { left: 25px; text-align: right; }
+        [dir="ltr"] #contact-popup { right: 25px; text-align: left; }
+
+        .form-header { background: #1e3a8a; color: white; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+        .form-body { padding: 20px; overflow-y: auto; font-size: 14px; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: 700; margin-bottom: 6px; color: #1e293b; }
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%; border: 1px solid #cbd5e1; padding: 10px; border-radius: 4px; outline: none;
+        }
+        .attach-box { border: 1px dashed #cbd5e1; padding: 15px; text-align: center; border-radius: 4px; color: #475569; cursor: pointer; background: #f8fafc; }
     </style>
 </head>
-<body class="text-[#334155] font-ar text-[12px]">
+<body class="text-[#334155] font-ar text-[12px]" id="body-tag">
 
-    <div id="verification-overlay">
-        <div class="bg-white p-8 rounded-xl card-shadow border border-gray-100 text-center max-w-sm w-full mx-4">
-            <div class="mb-6 flex justify-center">
-                <img src="logo.svg" alt="Ajeer" class="h-10">
+    <header class="bg-white py-3 px-4 md:px-12 border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center w-full">
+            <button onclick="toggleMenu()" class="mobile-hamburger text-[#1e3a8a] text-2xl">☰</button>
+            <div class="flex-shrink-0">
+                <img src="logo.svg" alt="Ajeer Logo" class="h-7 md:h-11">
             </div>
+            <div class="pc-flex hidden items-center gap-7">
+                <div class="flex items-center gap-6 text-[#475569] font-semibold">
+                    <a href="https://qiwa.sa/en" target="_blank" class="hover:text-blue-800 transition">
+                        <span class="lang-ar">مركز المعرفة</span><span class="lang-en hidden font-en">Knowledge Center</span>
+                    </a>
+                </div>
+                <button onclick="toggleLanguage()" class="flex items-center gap-1 font-bold text-[#1e3a8a]">
+                    <span class="lang-ar font-en">EN</span><span class="lang-en hidden font-ar">AR</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="verification-container">
+        <div class="bg-white p-8 rounded-lg card-shadow border border-gray-100 text-center max-w-sm w-full">
             <h2 class="font-bold text-[18px] mb-6 text-[#1e3a8a]">
                 <span class="lang-ar">التحقق الأمني</span>
-                <span class="lang-en hidden font-en">Security Verification</span>
+                <span class="lang-en hidden font-en">Security Check</span>
             </h2>
-            <div class="flex justify-center mb-6">
+            <div class="flex justify-center mb-4">
                 <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="onSuccess"></div>
             </div>
-            <p class="text-gray-400 text-[11px] leading-relaxed">
-                <span class="lang-ar">يرجى تأكيد الكابتشا لعرض بيانات التصريح</span>
-                <span class="lang-en hidden font-en">Please confirm captcha to view permit data</span>
+            <p class="text-gray-400 text-[11px]">
+                <span class="lang-ar">يرجى إكمال التحقق لعرض التفاصيل</span>
+                <span class="lang-en hidden font-en">Please verify to view details</span>
             </p>
         </div>
     </div>
 
-    <div id="main-app-wrapper">
-        
-        <header class="bg-white py-3 px-4 md:px-12 border-b border-gray-100 sticky top-0 z-50">
-            <div class="max-w-6xl mx-auto flex justify-between items-center w-full">
-                <div class="flex-shrink-0">
-                    <img src="logo.svg" alt="Ajeer Logo" class="h-7 md:h-11">
-                </div>
-                <div class="flex items-center gap-4">
-                    <button onclick="toggleLanguage()" class="font-bold text-[#1e3a8a] text-[14px]">
-                        <span class="lang-ar font-en">EN</span>
-                        <span class="lang-en hidden font-ar">AR</span>
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <main class="max-w-6xl mx-auto mt-8 px-4 mb-20">
-            <h1 class="text-[18px] md:text-[22px] font-bold text-[#2d3748] mb-8 text-right">
+    <div id="content-area">
+        <main class="max-w-6xl mx-auto mt-6 md:mt-12 px-4 mb-10">
+            <h1 class="text-[18px] md:text-[22px] font-bold text-[#2d3748] mb-6 md:mb-10 mobile-align">
                 <span class="lang-ar">تصريح أجير لحلول الموارد البشرية</span>
                 <span class="lang-en hidden font-en">Ajeer HRS permit</span>
             </h1>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 <div class="bg-white rounded-lg card-shadow overflow-hidden">
-                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 text-right">
+                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 mobile-align">
                         <h2 class="font-bold text-[13px] lang-ar">معلومات التصريح</h2>
                         <h2 class="font-bold text-[13px] lang-en hidden font-en uppercase">Permit Information</h2>
                     </div>
-                    <div class="p-5 space-y-4 text-right">
+                    <div class="p-5 space-y-4 mobile-align">
                         <div>
-                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">اسم العامل:</span><span class="lang-en hidden font-en">Laborer's name:</span></p>
+                            <p class="text-[11px] label-text mb-0.5"><span class="lang-ar">اسم العامل:</span><span class="lang-en hidden font-en">Laborer's name:</span></p>
                             <p class="font-bold text-[#1e293b] text-[14px]">Mozibur Rahman Sagor</p>
                         </div>
                         <div>
-                            <p class="text-[11px] text-gray-400 mb-2"><span class="lang-ar">حالة التصريح:</span><span class="lang-en hidden font-en">Permit status:</span></p>
-                            <span class="bg-[#00c07f] text-white px-4 py-1 rounded text-[10px] font-bold uppercase inline-block">
+                            <p class="text-[11px] label-text mb-1.5"><span class="lang-ar">حالة التصريح:</span><span class="lang-en hidden font-en">Permit status:</span></p>
+                            <span class="bg-[#00c07f] text-white px-4 py-1 rounded text-[10px] font-bold status-badge uppercase">
                                 <span class="lang-ar">ساري</span><span class="lang-en hidden font-en">Active</span>
                             </span>
                         </div>
-                        <div>
-                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">تاريخ انتهاء التصريح:</span><span class="lang-en hidden font-en">Expiration date:</span></p>
-                            <p class="font-bold font-en">2026-05-22</p>
-                        </div>
+                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">تاريخ انتهاء التصريح:</span><span class="lang-en hidden font-en">Expiration date:</span></p><p class="font-bold font-en">2026-05-22</p></div>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-lg card-shadow overflow-hidden">
-                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 text-right">
+                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 mobile-align">
                         <h2 class="font-bold text-[13px] lang-ar">المنشأة المستفيدة</h2>
                         <h2 class="font-bold text-[13px] lang-en hidden font-en uppercase">Beneficiary Company</h2>
                     </div>
-                    <div class="p-5 space-y-4 text-right">
+                    <div class="p-5 space-y-4 mobile-align">
                         <div>
-                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">اسم المنشأة:</span><span class="lang-en hidden font-en">Establishment name:</span></p>
-                            <p class="font-bold text-[#1e293b] leading-relaxed">شركة فرع شركة السוيدي اليكتريك لمشروعات نظم القوى ش.م.م</p>
+                            <p class="text-[11px] label-text mb-0.5"><span class="lang-ar">اسم المنشأة:</span><span class="lang-en hidden font-en">Establishment name:</span></p>
+                            <p class="font-bold text-[#1e293b] leading-relaxed">شركة فرع شركة السويدي اليكتريك لمشروعات نظم القوى ش.م</p>
                         </div>
-                        <div>
-                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">رقم المنشأة:</span><span class="lang-en hidden font-en">Establishment number:</span></p>
-                            <p class="font-bold font-en">9-1346646</p>
-                        </div>
+                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">رقم المنشأة:</span><span class="lang-en hidden font-en">Establishment number:</span></p><p class="font-bold font-en">9-1346646</p></div>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-lg card-shadow overflow-hidden">
-                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 text-right">
+                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 mobile-align">
                         <h2 class="font-bold text-[13px] lang-ar">شركة الإستقدام</h2>
                         <h2 class="font-bold text-[13px] lang-en hidden font-en uppercase">Istiqdam Company</h2>
                     </div>
-                    <div class="p-5 space-y-4 text-right">
-                        <div>
-                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">اسم المنشأة:</span><span class="lang-en hidden font-en">Establishment name:</span></p>
-                            <p class="font-bold text-[#1e293b]">شركة مهارة للموارد البشرية</p>
-                        </div>
-                        <div>
-                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">رقم المنشأة:</span><span class="lang-en hidden font-en">Establishment number:</span></p>
-                            <p class="font-bold font-en">1-355270</p>
-                        </div>
+                    <div class="p-5 space-y-4 mobile-align">
+                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">اسم المنشأة:</span><span class="lang-en hidden font-en">Establishment name:</span></p><p class="font-bold text-[#1e293b]">شركة মهارة للموارد البشرية</p></div>
+                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">رقم المنشأة:</span><span class="lang-en hidden font-en">Establishment number:</span></p><p class="font-bold font-en">1-355270</p></div>
                     </div>
                 </div>
             </div>
         </main>
-
-        <footer class="bg-white border-t border-gray-100 py-10 px-6 mt-auto">
-            <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-                <img src="logo.svg" class="h-8">
-                <p class="text-gray-400 text-[11px]">© 2026 / Ajeer HRS Permit Verification</p>
-                <div class="flex gap-4">
-                    <img src="tk.svg" class="h-8"><img src="hr.svg" class="h-10">
-                </div>
-            </div>
-        </footer>
     </div>
 
-    <div class="help-fab"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+    <footer class="bg-white border-t border-gray-100 py-8 px-6 md:px-12">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-6">
+                <img src="logo.svg" alt="Ajeer" class="h-9">
+                <p class="text-gray-400 text-[11px]">© ٢٠٢৬ / أجير حلول الموارد البشرية</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <img src="tk.svg" class="h-8 md:h-10"><img src="hr.svg" class="h-10 md:h-12">
+            </div>
+        </div>
+    </footer>
+
+    <div class="help-fab" onclick="toggleContactForm()">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+    </div>
 
     <script>
-        // ভেরিফিকেশন সাকসেস ফাংশন
         function onSuccess() {
-            // ১. ভেরিফিকেশন বক্স সরিয়ে ফেলুন
-            const overlay = document.getElementById('verification-overlay');
-            overlay.style.display = 'none';
-            
-            // ২. মূল কন্টেন্ট দৃশ্যমান করুন
-            const wrapper = document.getElementById('main-app-wrapper');
-            wrapper.style.display = 'block';
-            wrapper.style.visibility = 'visible';
-            
-            // ৩. বডি স্ক্রল আনলক করুন
-            document.body.style.overflow = 'auto';
-
-            // ৪. অতিরিক্ত নিরাপত্তা: কার্ডের ভেতরে কোনো কিছু হিডেন থাকলে তা ফোর্স ওপেন করা
-            document.querySelectorAll('#main-app-wrapper .hidden').forEach(el => {
-                if(!el.classList.contains('lang-en')) { // শুধু ভাষা ছাড়া বাকি সব
-                    el.classList.remove('hidden');
-                }
-            });
+            document.getElementById('verification-container').style.display = 'none';
+            document.getElementById('content-area').style.display = 'block';
+            document.querySelector('footer').style.display = 'block';
+            document.querySelector('.help-fab').style.display = 'flex';
         }
 
-        // ভাষা পরিবর্তন
+        function toggleMenu() { document.getElementById('mobile-overlay').classList.toggle('active'); }
+        function toggleContactForm() { document.getElementById('contact-popup').classList.toggle('active'); }
+        
         let currentLang = 'ar';
         function toggleLanguage() {
             const htmlTag = document.getElementById('main-html');
             const arElements = document.querySelectorAll('.lang-ar');
             const enElements = document.querySelectorAll('.lang-en');
-            
             if (currentLang === 'ar') {
                 htmlTag.setAttribute('dir', 'ltr');
                 arElements.forEach(el => el.classList.add('hidden'));
