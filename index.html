@@ -25,19 +25,29 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        /* Floating Help Button */
-        .help-btn {
-            position: fixed; bottom: 25px; z-index: 1000;
-            width: 55px; height: 55px; border-radius: 50%;
-            background-color: #1e3a8a; color: white;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            cursor: pointer; transition: transform 0.2s;
+        /* Floating Help Button - Fixed position at bottom corner */
+        .fixed-help-btn {
+            position: fixed;
+            bottom: 25px;
+            width: 50px;
+            height: 50px;
+            background-color: #1e3a8a;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 3000; /* Captcha এর চেয়েও বেশি যাতে বাটনটি দেখা যায় */
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
         }
-        .help-btn:hover { transform: scale(1.1); }
-        /* RTL এ বামে, LTR এ ডানে */
-        [dir="rtl"] .help-btn { left: 25px; }
-        [dir="ltr"] .help-btn { right: 25px; }
+        .fixed-help-btn:hover { transform: scale(1.1); background-color: #2563eb; }
+        
+        /* RTL এর জন্য বামে এবং LTR এর জন্য ডানে */
+        [dir="rtl"] .fixed-help-btn { left: 25px; }
+        [dir="ltr"] .fixed-help-btn { right: 25px; }
 
         #mobile-overlay {
             position: fixed; inset: 0; background: white; z-index: 1000;
@@ -45,7 +55,6 @@
             text-align: center;
         }
         #mobile-overlay.active { display: flex; }
-        .menu-item { font-size: 16px; color: #475569; font-weight: 600; text-decoration: none; }
 
         @media (max-width: 767px) {
             .mobile-hide { display: none !important; }
@@ -62,10 +71,8 @@
 </head>
 <body class="text-[#334155] font-ar text-[12px]" id="body-tag">
 
-    <a href="https://qiwa.sa/contact" target="_blank" class="help-btn" id="help-trigger">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-        </svg>
+    <a href="https://qiwa.sa/contact" target="_blank" class="fixed-help-btn" title="Help">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
     </a>
 
     <div id="captcha-container">
@@ -78,13 +85,10 @@
 
     <div id="mobile-overlay">
         <button onclick="toggleMenu()" class="absolute top-6 left-6 text-[#1e3a8a] text-3xl">✕</button>
-        <button onclick="toggleLanguage(); toggleMenu()" class="menu-item flex items-center gap-2">
+        <button onclick="toggleLanguage(); toggleMenu()" class="text-[#475569] font-bold text-[16px]">
             <span class="lang-ar font-en">English 🌐</span>
             <span class="lang-en hidden font-ar">العربية 🌐</span>
         </button>
-        <a href="https://qiwa.sa/en" target="_blank" class="menu-item"><span class="lang-ar">مركز المعرفة</span><span class="lang-en hidden font-en">Knowledge Center</span></a>
-        <a href="https://sso.qiwa.sa/sign-in" target="_blank" class="menu-item"><span class="lang-ar">تسجيل الدخول</span><span class="lang-en hidden font-en">Sign in</span></a>
-        <a href="https://sso.qiwa.sa/en/registration" target="_blank" class="bg-[#1e3a8a] text-white px-10 py-3 rounded-md font-bold text-[15px]"><span class="lang-ar">سجل الآن</span><span class="lang-en hidden font-en">Register now</span></a>
     </div>
 
     <header class="bg-white py-3 px-4 md:px-12 border-b border-gray-100 sticky top-0 z-50">
@@ -94,14 +98,12 @@
                 <img src="logo.png" alt="Ajeer Logo" class="h-7 md:h-11">
             </div>
             <div class="pc-flex hidden items-center gap-7">
-                <div class="flex items-center gap-6 text-[#475569] font-semibold">
-                    <a href="https://qiwa.sa/en" target="_blank" class="hover:text-blue-800 transition"><span class="lang-ar">مركز المعرفة</span><span class="lang-en hidden font-en">Knowledge Center</span></a>
-                    <a href="https://sso.qiwa.sa/sign-in" target="_blank" class="hover:text-blue-800 transition"><span class="lang-ar">تسجيل الدخول</span><span class="lang-en hidden font-en">Sign in</span></a>
-                </div>
                 <button onclick="toggleLanguage()" class="flex items-center gap-1 font-bold text-[#1e3a8a]">
                     <span class="lang-ar font-en">EN</span><span class="lang-en hidden font-ar">AR</span>
                 </button>
-                <a href="https://sso.qiwa.sa/en/registration" target="_blank" class="bg-[#1e3a8a] text-white px-5 py-2.5 rounded-md font-bold text-[13px]"><span class="lang-ar">سجل الآن</span><span class="lang-en hidden font-en">Register now</span></a>
+                <a href="https://sso.qiwa.sa/en/registration" target="_blank" class="bg-[#1e3a8a] text-white px-5 py-2.5 rounded-md font-bold text-[13px]">
+                    <span class="lang-ar">سجل الآن</span><span class="lang-en hidden font-en">Register now</span>
+                </a>
             </div>
         </div>
     </header>
@@ -143,9 +145,9 @@
                     <div class="p-5 space-y-4 mobile-align">
                         <div>
                             <p class="text-[11px] label-text mb-0.5"><span class="lang-ar">اسم المنشأة:</span><span class="lang-en hidden font-en">Establishment name:</span></p>
-                            <p class="font-bold text-[#1e293b] leading-relaxed">شركة فرع شركة السويدي اليكتريك لمشروعات نظم القوى ش.ম</p>
+                            <p class="font-bold text-[#1e293b] leading-relaxed">شركة فرع شركة السويدي اليكتريك لمشروعات نظم القوى ش.م</p>
                         </div>
-                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">رقم المنشأة:</span><span class="lang-en hidden font-en">Establishment number:</span></p><p class="font-bold font-en">9-1346646</p></div>
+                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">رقم المنশأة:</span><span class="lang-en hidden font-en">Establishment number:</span></p><p class="font-bold font-en">9-1346646</p></div>
                     </div>
                 </div>
 
@@ -170,18 +172,15 @@
                         <span class="lang-ar">© ٢٠٢৬ / أجير حلول الموارد البشرية</span>
                         <span class="lang-en hidden font-en">© 2026 / Ajeer HRS</span>
                     </div>
-                    <button onclick="toggleLanguage()" class="text-blue-800 font-bold text-[12px]">🌐 <span class="lang-ar">English</span><span class="lang-en hidden">العربية</span></button>
                 </div>
                 <div class="flex items-center gap-6 order-1 md:order-2">
-                    <img src="tk.svg" alt="TK" class="h-8 md:h-10">
-                    <img src="hr.svg" alt="HR" class="h-10 md:h-12">
+                    <img src="tk.svg" class="h-8 md:h-10"><img src="hr.svg" class="h-10 md:h-12">
                 </div>
             </div>
         </footer>
     </div>
 
     <script>
-        // Captcha callback
         function onCaptchaSuccess() {
             document.getElementById('captcha-container').classList.add('hidden');
             document.getElementById('content-area').classList.add('verified');
