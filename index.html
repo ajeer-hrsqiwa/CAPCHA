@@ -11,99 +11,172 @@
     <style>
         .font-ar { font-family: 'Noto Kufi Arabic', sans-serif; }
         .font-en { font-family: 'Inter', sans-serif; }
+        .card-shadow { box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04); }
         
-        /* প্রাথমিক অবস্থায় পুরো পেজ হাইড থাকবে */
-        #main-wrapper { display: none; }
+        /* প্রাথমিক অবস্থা: পুরো কন্টেন্ট লক */
+        #main-app-wrapper { display: none; visibility: hidden; }
         
-        /* ভেরিফিকেশন স্ক্রিন স্টাইল */
-        #verification-area {
-            position: fixed;
-            inset: 0;
-            background-color: #f4f7fa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
+        /* ভেরিফিকেশন ওভারলে */
+        #verification-overlay {
+            position: fixed; inset: 0; background-color: #f4f7fa;
+            display: flex; align-items: center; justify-content: center; z-index: 9999;
         }
 
-        .card-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); }
+        body { background-color: #f4f7fa; overflow: hidden; } /* লোড হওয়ার সময় স্ক্রল বন্ধ */
         .hidden { display: none !important; }
+
+        /* Floating Help Button */
+        .help-fab {
+            position: fixed; bottom: 25px; z-index: 3000;
+            width: 58px; height: 58px; background-color: #1e3a8a;
+            border: 4px solid #94a3b8; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; cursor: pointer;
+        }
+        [dir="rtl"] .help-fab { left: 25px; }
+        [dir="ltr"] .help-fab { right: 25px; }
     </style>
 </head>
-<body class="bg-[#f4f7fa] text-[#334155] font-ar text-[12px]">
+<body class="text-[#334155] font-ar text-[12px]">
 
-    <div id="verification-area">
-        <div class="bg-white p-10 rounded-xl card-shadow border border-gray-50 text-center max-w-sm w-full mx-4">
-            <img src="logo.svg" alt="Ajeer" class="h-10 mx-auto mb-6">
-            
+    <div id="verification-overlay">
+        <div class="bg-white p-8 rounded-xl card-shadow border border-gray-100 text-center max-w-sm w-full mx-4">
+            <div class="mb-6 flex justify-center">
+                <img src="logo.svg" alt="Ajeer" class="h-10">
+            </div>
             <h2 class="font-bold text-[18px] mb-6 text-[#1e3a8a]">
                 <span class="lang-ar">التحقق الأمني</span>
                 <span class="lang-en hidden font-en">Security Verification</span>
             </h2>
-
             <div class="flex justify-center mb-6">
-                <div class="g-recaptcha" 
-                     data-sitekey="6Ldj67osAAAAABW7uAG8MrNg8uaBrJ7Pqm5KvPjq" 
-                     data-callback="onSuccess">
-                </div>
+                <div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="onSuccess"></div>
             </div>
-
-            <p class="text-gray-500 text-[12px] leading-relaxed">
-                <span class="lang-ar">يرجى إكمال التحقق للوصول إلى بيانات التصريح</span>
-                <span class="lang-en hidden font-en">Complete verification to access permit data.</span>
+            <p class="text-gray-400 text-[11px] leading-relaxed">
+                <span class="lang-ar">يرجى تأكيد الكابتشا لعرض بيانات التصريح</span>
+                <span class="lang-en hidden font-en">Please confirm captcha to view permit data</span>
             </p>
         </div>
     </div>
 
-    <div id="main-wrapper">
+    <div id="main-app-wrapper">
         
-        <header class="bg-white py-4 px-6 md:px-12 border-b border-gray-100 sticky top-0 z-50">
-            <div class="max-w-6xl mx-auto flex justify-between items-center">
-                <img src="logo.svg" alt="Ajeer" class="h-8 md:h-11">
-                <button onclick="toggleLanguage()" class="text-[#1e3a8a] font-bold border border-[#1e3a8a] px-3 py-1 rounded">
-                    <span class="lang-ar font-en">EN</span>
-                    <span class="lang-en hidden font-ar">AR</span>
-                </button>
+        <header class="bg-white py-3 px-4 md:px-12 border-b border-gray-100 sticky top-0 z-50">
+            <div class="max-w-6xl mx-auto flex justify-between items-center w-full">
+                <div class="flex-shrink-0">
+                    <img src="logo.svg" alt="Ajeer Logo" class="h-7 md:h-11">
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleLanguage()" class="font-bold text-[#1e3a8a] text-[14px]">
+                        <span class="lang-ar font-en">EN</span>
+                        <span class="lang-en hidden font-ar">AR</span>
+                    </button>
+                </div>
             </div>
         </header>
 
-        <main class="max-w-6xl mx-auto mt-10 px-4 mb-20">
+        <main class="max-w-6xl mx-auto mt-8 px-4 mb-20">
+            <h1 class="text-[18px] md:text-[22px] font-bold text-[#2d3748] mb-8 text-right">
+                <span class="lang-ar">تصريح أجير لحلول الموارد البشرية</span>
+                <span class="lang-en hidden font-en">Ajeer HRS permit</span>
+            </h1>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-lg card-shadow">
-                    <h3 class="text-gray-400 text-[11px] mb-2 uppercase">Laborer's Name</h3>
-                    <p class="font-bold text-[15px] text-[#1e293b]">Mozibur Rahman Sagor</p>
+                <div class="bg-white rounded-lg card-shadow overflow-hidden">
+                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 text-right">
+                        <h2 class="font-bold text-[13px] lang-ar">معلومات التصريح</h2>
+                        <h2 class="font-bold text-[13px] lang-en hidden font-en uppercase">Permit Information</h2>
+                    </div>
+                    <div class="p-5 space-y-4 text-right">
+                        <div>
+                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">اسم العامل:</span><span class="lang-en hidden font-en">Laborer's name:</span></p>
+                            <p class="font-bold text-[#1e293b] text-[14px]">Mozibur Rahman Sagor</p>
+                        </div>
+                        <div>
+                            <p class="text-[11px] text-gray-400 mb-2"><span class="lang-ar">حالة التصريح:</span><span class="lang-en hidden font-en">Permit status:</span></p>
+                            <span class="bg-[#00c07f] text-white px-4 py-1 rounded text-[10px] font-bold uppercase inline-block">
+                                <span class="lang-ar">ساري</span><span class="lang-en hidden font-en">Active</span>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">تاريخ انتهاء التصريح:</span><span class="lang-en hidden font-en">Expiration date:</span></p>
+                            <p class="font-bold font-en">2026-05-22</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg card-shadow">
-                    <h3 class="text-gray-400 text-[11px] mb-2 uppercase">Permit Status</h3>
-                    <span class="bg-[#00c07f] text-white px-3 py-1 rounded text-[10px] font-bold">ACTIVE / ساري</span>
+
+                <div class="bg-white rounded-lg card-shadow overflow-hidden">
+                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 text-right">
+                        <h2 class="font-bold text-[13px] lang-ar">المنشأة المستفيدة</h2>
+                        <h2 class="font-bold text-[13px] lang-en hidden font-en uppercase">Beneficiary Company</h2>
+                    </div>
+                    <div class="p-5 space-y-4 text-right">
+                        <div>
+                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">اسم المنشأة:</span><span class="lang-en hidden font-en">Establishment name:</span></p>
+                            <p class="font-bold text-[#1e293b] leading-relaxed">شركة فرع شركة السוيدي اليكتريك لمشروعات نظم القوى ش.م.م</p>
+                        </div>
+                        <div>
+                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">رقم المنشأة:</span><span class="lang-en hidden font-en">Establishment number:</span></p>
+                            <p class="font-bold font-en">9-1346646</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg card-shadow">
-                    <h3 class="text-gray-400 text-[11px] mb-2 uppercase">Expiry Date</h3>
-                    <p class="font-bold font-en text-[#1e293b]">2026-05-22</p>
+
+                <div class="bg-white rounded-lg card-shadow overflow-hidden">
+                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 text-right">
+                        <h2 class="font-bold text-[13px] lang-ar">شركة الإستقدام</h2>
+                        <h2 class="font-bold text-[13px] lang-en hidden font-en uppercase">Istiqdam Company</h2>
+                    </div>
+                    <div class="p-5 space-y-4 text-right">
+                        <div>
+                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">اسم المنشأة:</span><span class="lang-en hidden font-en">Establishment name:</span></p>
+                            <p class="font-bold text-[#1e293b]">شركة مهارة للموارد البشرية</p>
+                        </div>
+                        <div>
+                            <p class="text-[11px] text-gray-400 mb-1"><span class="lang-ar">رقم المنشأة:</span><span class="lang-en hidden font-en">Establishment number:</span></p>
+                            <p class="font-bold font-en">1-355270</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
 
-        <footer class="bg-white border-t border-gray-100 py-10 text-center">
-            <p class="text-gray-400 text-[11px]">© 2026 Ajeer Human Resources Solutions. All rights reserved.</p>
+        <footer class="bg-white border-t border-gray-100 py-10 px-6 mt-auto">
+            <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                <img src="logo.svg" class="h-8">
+                <p class="text-gray-400 text-[11px]">© 2026 / Ajeer HRS Permit Verification</p>
+                <div class="flex gap-4">
+                    <img src="tk.svg" class="h-8"><img src="hr.svg" class="h-10">
+                </div>
+            </div>
         </footer>
-
     </div>
 
+    <div class="help-fab"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+
     <script>
-        // ম্যাজিক ফাংশন: ভেরিফিকেশন সফল হলে এটি চলবে
+        // ভেরিফিকেশন সাকসেস ফাংশন
         function onSuccess() {
-            // ভেরিফিকেশন বক্সটি ভ্যানিশ (Remove) করে দাও
-            const verifyArea = document.getElementById('verification-area');
-            verifyArea.style.opacity = '0';
-            setTimeout(() => {
-                verifyArea.style.display = 'none';
-                // মূল কন্টেন্ট সামনে নিয়ে এসো
-                document.getElementById('main-wrapper').style.display = 'block';
-            }, 300);
+            // ১. ভেরিফিকেশন বক্স সরিয়ে ফেলুন
+            const overlay = document.getElementById('verification-overlay');
+            overlay.style.display = 'none';
+            
+            // ২. মূল কন্টেন্ট দৃশ্যমান করুন
+            const wrapper = document.getElementById('main-app-wrapper');
+            wrapper.style.display = 'block';
+            wrapper.style.visibility = 'visible';
+            
+            // ৩. বডি স্ক্রল আনলক করুন
+            document.body.style.overflow = 'auto';
+
+            // ৪. অতিরিক্ত নিরাপত্তা: কার্ডের ভেতরে কোনো কিছু হিডেন থাকলে তা ফোর্স ওপেন করা
+            document.querySelectorAll('#main-app-wrapper .hidden').forEach(el => {
+                if(!el.classList.contains('lang-en')) { // শুধু ভাষা ছাড়া বাকি সব
+                    el.classList.remove('hidden');
+                }
+            });
         }
 
-        // ভাষা পরিবর্তনের ফাংশন
+        // ভাষা পরিবর্তন
         let currentLang = 'ar';
         function toggleLanguage() {
             const htmlTag = document.getElementById('main-html');
