@@ -108,11 +108,15 @@
     </style>
 </head>
 <body class="text-[#334155] font-ar text-[12px]" id="body-tag">
-<div id="captcha-box" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: #fff; position: fixed; width: 100%; z-index: 9999;">
-    <div class="g-recaptcha" data-sitekey="6Ldj67osAAAAABW7uAG8MrNg8uaBrJ7Pqm5KvPjq" data-callback="onSuccess"></div>
-</div>
+<body class="text-[#334155] font-ar text-[12px]" id="body-tag">
 
-<div id="full-page-content" style="display: none;">
+    <div id="captcha-box" style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #fff; position: fixed; width: 100%; z-index: 9999; top: 0; left: 0;">
+        <div class="g-recaptcha" data-sitekey="6Ldj67osAAAAABW7uAG8MrNg8uaBrJ7Pqm5KvPjq" data-callback="onSuccess"></div>
+    </div>
+
+    <div id="full-page-content" style="display: none;">
+    
+    ```
 </div>
     <div class="help-fab" onclick="toggleContactForm()">
         <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
