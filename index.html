@@ -299,7 +299,7 @@
         function initCaptcha() {
             const script = document.createElement('script');
             // ভাষা অনুযায়ী ক্যাপচা লোড হবে
-            script.src = `https://www.google.com/recaptcha/api.js?render=explicit&hl=${currentLang}`;
+            script.src = `https://www.google.com/recaptcha/api.js?render=explicit&hl=en`;
             script.async = true;
             script.defer = true;
             script.onload = () => {
