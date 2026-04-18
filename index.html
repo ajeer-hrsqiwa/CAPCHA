@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" id="main-html">
 <head>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajeer HR Solutions</title>
     <link rel="icon" type="image/svg+xml" href="logo.svg">
-    
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    
+
     <style>
         body { -webkit-user-select: none; user-select: none; background-color: #f4f7fa; transition: all 0.2s ease; overflow-x: hidden; }
         .font-ar { font-family: 'Noto Kufi Arabic', sans-serif; }
@@ -32,18 +29,23 @@
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-weight: 700; margin-bottom: 6px; color: #1e293b; }
         .input-group input, .input-group textarea, .input-group select { width: 100%; border: 1px solid #cbd5e1; padding: 10px; border-radius: 4px; outline: none; }
+        .desc-subtext { font-size: 12px; color: #64748b; margin-top: -5px; margin-bottom: 10px; line-height: 1.4; }
+        .attach-box { border: 1px dashed #cbd5e1; padding: 15px; text-align: center; border-radius: 4px; color: #475569; cursor: pointer; background: #f8fafc; }
     </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body class="text-[#334155] font-ar text-[12px]" id="body-tag">
 
     <div id="captcha-box" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: #fff; position: fixed; width: 100%; z-index: 9999;">
+        <img src="logo.svg" style="height: 40px; margin-bottom: 20px;">
         <h3 style="margin-bottom: 20px; font-family: sans-serif; font-weight: bold;">Security Verification</h3>
         <div class="g-recaptcha" data-sitekey="6Ldj67osAAAAABW7uAG8MrNg8uaBrJ7Pqm5KvPjq" data-callback="onSuccess"></div>
     </div>
 
     <div id="full-page-content" style="display: none;">
-        
+
         <div class="help-fab" onclick="toggleContactForm()">
             <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
         </div>
@@ -77,28 +79,65 @@
                 <span class="lang-ar">تصريح أجير لحلول الموارد البشرية</span>
                 <span class="lang-en hidden font-en">Ajeer HRS permit</span>
             </h1>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                <div class="bg-white rounded-lg card-shadow overflow-hidden p-5">
-                    <h2 class="font-bold text-[13px] lang-ar">معلومات التصريح</h2>
-                    <p class="mt-4"><strong>Laborer:</strong> Iftikhar Ahmed Muhammad Nawaz</p>
-                    <p><strong>Status:</strong> <span class="text-green-600">Active</span></p>
+                <div class="bg-white rounded-lg card-shadow overflow-hidden">
+                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 mobile-align">
+                        <h2 class="font-bold text-[13px] lang-ar">معلومات التصريح</h2>
+                        <h2 class="font-bold text-[13px] lang-en hidden font-en uppercase">Permit Information</h2>
+                    </div>
+                    <div class="p-5 space-y-4 mobile-align">
+                        <div>
+                            <p class="text-[11px] label-text mb-0.5"><span class="lang-ar">اسم العامل:</span><span class="lang-en hidden font-en">Laborer's name:</span></p>
+                            <p class="font-bold text-[#1e293b] text-[14px]">Iftikhar Ahmed Muhammad Nawaz</p>
+                        </div>
+                        <div>
+                            <p class="text-[11px] label-text mb-1.5"><span class="lang-ar">حالة التصريح:</span><span class="lang-en hidden font-en">Permit status:</span></p>
+                            <span class="bg-[#00c07f] text-white px-4 py-1 rounded text-[10px] font-bold status-badge uppercase">
+                                <span class="lang-ar">ساري</span><span class="lang-en hidden font-en">Active</span>
+                            </span>
+                        </div>
+                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">تاريخ بداية التصريح:</span></p><p class="font-bold">2026-04-18</p></div>
+                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">تاريخ انتهاء التصريح:</span></p><p class="font-bold">2027-04-18</p></div>
+                    </div>
                 </div>
-                <div class="bg-white rounded-lg card-shadow overflow-hidden p-5">
-                    <h2 class="font-bold text-[13px] lang-ar">المنشأة المستفيدة</h2>
-                    <p class="mt-4">شركة اي ام الدولية للمقاولات العامة</p>
+
+                <div class="bg-white rounded-lg card-shadow overflow-hidden">
+                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 mobile-align">
+                        <h2 class="font-bold text-[13px] lang-ar">المنشأة المستفيدة</h2>
+                    </div>
+                    <div class="p-5 space-y-4 mobile-align">
+                        <div>
+                            <p class="text-[11px] label-text mb-0.5"><span class="lang-ar">اسم المنشأة:</span></p>
+                            <p class="font-bold text-[#1e293b]">شركة اي ام الدولية للمقاولات العامة</p>
+                        </div>
+                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">رقم المنشأة:</span></p><p class="font-bold">27-46412</p></div>
+                    </div>
                 </div>
-                <div class="bg-white rounded-lg card-shadow overflow-hidden p-5">
-                    <h2 class="font-bold text-[13px] lang-ar">شركة الإستقدام</h2>
-                    <p class="mt-4">مؤسسة غانم مطلق بن غانم الدوسري للنقليات</p>
+
+                <div class="bg-white rounded-lg card-shadow overflow-hidden">
+                    <div class="bg-[#fcfcfc] px-5 py-4 border-b border-gray-100 mobile-align">
+                        <h2 class="font-bold text-[13px] lang-ar">شركة الإستقدام</h2>
+                    </div>
+                    <div class="p-5 space-y-4 mobile-align">
+                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">اسم المنشأة:</span></p><p class="font-bold text-[#1e293b]">مؤسسة غانম مطلق بن غانم الدوسري للنقليات</p></div>
+                        <div><p class="text-[11px] label-text mb-0.5"><span class="lang-ar">رقم المنشأة:</span></p><p class="font-bold">1-355278</p></div>
+                    </div>
                 </div>
             </div>
         </main>
 
-        <footer class="bg-white border-t border-gray-100 py-8 px-6 md:px-12 text-center">
-            <p>© 2026 / Ajeer HRS</p>
+        <footer class="bg-white border-t border-gray-100 py-8 px-6 md:px-12">
+            <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                    <img src="logo.svg" alt="Ajeer" class="h-9 md:h-11">
+                    <span class="text-gray-400 text-[12px]">© ٢٠٢٦ / أجير حلول الموارد البشرية</span>
+                </div>
+            </div>
         </footer>
+    </div>
 
-    </div> <script>
+    <script>
         // ক্যাপচা সফল হওয়ার ফাংশন
         function onSuccess(response) {
             if (response.length !== 0) {
@@ -107,7 +146,7 @@
             }
         }
 
-        // মেনু এবং ল্যাঙ্গুয়েজ ফাংশন
+        // আপনার মেনু এবং ল্যাঙ্গুয়েজ ফাংশনসমূহ
         function toggleMenu() { document.getElementById('mobile-overlay')?.classList.toggle('active'); }
         function toggleContactForm() { document.getElementById('contact-popup').classList.toggle('active'); }
         
