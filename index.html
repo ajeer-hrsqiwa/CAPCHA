@@ -335,5 +335,23 @@
             }
         }
     </script>
+</div> <script>
+        // এটি নিশ্চিত করবে যে ফাংশনটি গ্লোবালি কাজ করছে
+        window.onSuccess = function(response) {
+            console.log("Captcha success!"); // এটি শুধু চেক করার জন্য
+            
+            // ১. ক্যাপচা বক্স হাইড করা
+            var box = document.getElementById('captcha-box');
+            if (box) {
+                box.style.setProperty('display', 'none', 'important');
+            }
+
+            // ২. আসল পেজ কন্টেন্ট দেখানো
+            var content = document.getElementById('full-page-content');
+            if (content) {
+                content.style.setProperty('display', 'block', 'important');
+            }
+        };
+    </script>
 </body>
 </html>
