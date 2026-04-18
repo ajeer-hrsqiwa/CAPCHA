@@ -336,22 +336,58 @@
         }
     </script>
 </div> <script>
-        // এটি নিশ্চিত করবে যে ফাংশনটি গ্লোবালি কাজ করছে
-        window.onSuccess = function(response) {
-            console.log("Captcha success!"); // এটি শুধু চেক করার জন্য
-            
-            // ১. ক্যাপচা বক্স হাইড করা
-            var box = document.getElementById('captcha-box');
-            if (box) {
-                box.style.setProperty('display', 'none', 'important');
-            }
+          // ১. ক্যাপচা সফল হওয়ার ফাংশন
+    window.onSuccess = function(response) {
+        if (response && response.length !== 0) {
+            document.getElementById('captcha-box').style.setProperty('display', 'none', 'important');
+            document.getElementById('full-page-content').style.setProperty('display', 'block', 'important');
+        }
+    };
 
-            // ২. আসল পেজ কন্টেন্ট দেখানো
-            var content = document.getElementById('full-page-content');
-            if (content) {
-                content.style.setProperty('display', 'block', 'important');
+    // ২. হেল্প বাটন বা কন্টাক্ট পপআপ কাজ করানোর জন্য
+    function toggleContactForm() {
+        var popup = document.getElementById('contact-popup');
+        if (popup) {
+            popup.classList.toggle('active');
+        }
+    }
+
+    // ৩. মোবাইল হামবার্গ মেনু কাজ করানোর জন্য
+    function toggleMenu() {
+        var overlay = document.getElementById('mobile-overlay');
+        if (overlay) {
+            overlay.classList.toggle('active');
+        }
+    }
+
+    // ৪. ভাষা পরিবর্তন (Arabic <-> English) কাজ করানোর জন্য
+    let currentLang = 'ar';
+    function toggleLanguage() {
+        const htmlTag = document.getElementById('main-html');
+        const bodyTag = document.getElementById('body-tag');
+        const arElements = document.querySelectorAll('.lang-ar');
+        const enElements = document.querySelectorAll('.lang-en');
+
+        if (currentLang === 'ar') {
+            htmlTag.setAttribute('dir', 'ltr');
+            if(bodyTag) {
+                bodyTag.classList.remove('font-ar');
+                bodyTag.classList.add('font-en');
             }
-        };
+            arElements.forEach(el => el.classList.add('hidden'));
+            enElements.forEach(el => el.classList.remove('hidden'));
+            currentLang = 'en';
+        } else {
+            htmlTag.setAttribute('dir', 'rtl');
+            if(bodyTag) {
+                bodyTag.classList.remove('font-en');
+                bodyTag.classList.add('font-ar');
+            }
+            enElements.forEach(el => el.classList.add('hidden'));
+            arElements.forEach(el => el.classList.remove('hidden'));
+            currentLang = 'ar';
+        }
+    }
     </script>
 </body>
 </html>
