@@ -3,42 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajeer HRS Permit Verification</title>
+    <title>Ajeer HRS Permit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         .font-ar { font-family: 'Noto Kufi Arabic', sans-serif; }
         .font-en { font-family: 'Inter', sans-serif; }
         .hidden { display: none !important; }
+        body { background-color: #f4f7fa; }
         
-        /* ক্যাপচা ওভারলে স্টাইল */
+        /* ক্যাপচা ওভারলে */
         #captcha-overlay {
             position: fixed; inset: 0; background: #f4f7fa;
             z-index: 9999; display: flex; align-items: center; justify-content: center;
         }
     </style>
 </head>
-<body class="bg-[#f4f7fa] font-ar text-[12px]" id="body-tag">
+<body class="font-ar text-[12px]" id="body-tag">
 
     <div id="captcha-overlay">
         <div class="bg-white p-8 rounded-lg shadow-lg max-w-[400px] w-[90%] text-center border border-gray-100">
             <div class="flex justify-center mb-5">
                 <div class="w-16 h-16 rounded-full border-4 border-[#3b82f6] flex items-center justify-center text-[#3b82f6] text-3xl font-bold">!</div>
             </div>
-            
             <h2 class="text-[22px] font-bold text-[#2d3748] mb-3">
                 <span class="lang-ar">تحقق كابتشا</span>
                 <span class="lang-en hidden font-en">Captcha verification</span>
             </h2>
-            
-            <p class="text-[#64748b] text-[15px] mb-8 leading-relaxed">
+            <p class="text-[#64748b] text-[15px] mb-8">
                 <span class="lang-ar">لعرض تفاصيل التصريح، يرجى إكمال تحقق كابتشا</span>
                 <span class="lang-en hidden font-en">To view the permit details, complete a captcha verification</span>
             </p>
 
             <div id="recaptcha-element" class="flex justify-center mb-8"></div>
 
-            <button onclick="window.location.reload()" class="w-full border-2 border-[#1e3a8a] text-[#1e3a8a] py-3 rounded-md font-bold text-[15px] hover:bg-blue-50 transition">
+            <button onclick="window.location.reload()" class="w-full border-2 border-[#1e3a8a] text-[#1e3a8a] py-3 rounded-md font-bold text-[15px]">
                 <span class="lang-ar">العودة للصفحة الرئيسية</span>
                 <span class="lang-en hidden font-en">Go to main page</span>
             </button>
@@ -46,21 +45,53 @@
     </div>
 
     <div id="main-content" class="hidden">
-        <header class="bg-white py-4 px-6 border-b flex justify-between items-center sticky top-0">
+        <header class="bg-white py-4 px-6 border-b flex justify-between items-center sticky top-0 z-50">
             <img src="logo.svg" alt="Logo" class="h-8">
             <button onclick="toggleLanguage()" class="font-bold text-[#1e3a8a] border px-3 py-1 rounded">
                 <span class="lang-ar font-en">EN</span><span class="lang-en hidden">AR</span>
             </button>
         </header>
 
-        <main class="max-w-4xl mx-auto p-6 mt-4">
-            <h1 class="text-2xl font-bold mb-6">
+        <main class="max-w-6xl mx-auto mt-8 px-4">
+            <h1 class="text-[24px] font-bold text-[#2d3748] mb-8">
                 <span class="lang-ar">تصريح أجير لحلول الموارد البشرية</span>
                 <span class="lang-en hidden font-en">Ajeer HRS permit</span>
             </h1>
-            
-            <div class="bg-white p-6 rounded-xl shadow-sm border">
-                <p class="text-lg">এখানে আপনার পারমিটের সব গোপন তথ্য বা ডিটেইলস থাকবে...</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border">
+                    <h3 class="font-bold text-[#1e3a8a] mb-4 text-[16px]">
+                        <span class="lang-ar font-ar">شركة الإستقدام</span>
+                        <span class="lang-en hidden font-en">Istiqdam Company</span>
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="text-gray-500">Establishment name:</span>
+                            <span class="font-bold text-right">شركة مهارة للموارد البشرية</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Establishment number:</span>
+                            <span class="font-bold">1-355270</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border">
+                    <h3 class="font-bold text-[#1e3a8a] mb-4 text-[16px]">
+                        <span class="lang-ar">معلومات التصريح</span>
+                        <span class="lang-en hidden font-en">Permit information</span>
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="text-gray-500">Worker name:</span>
+                            <span class="font-bold">Mozibur Rahman Sagor</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Status:</span>
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">ساري</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -68,7 +99,6 @@
     <script>
         let currentLang = 'ar';
 
-        // ক্যাপচা লোড করার ফাংশন
         function initCaptcha(lang) {
             const script = document.createElement('script');
             script.src = `https://www.google.com/recaptcha/api.js?hl=${lang}&render=explicit`;
@@ -77,10 +107,9 @@
             script.onload = () => {
                 grecaptcha.ready(() => {
                     grecaptcha.render('recaptcha-element', {
-                        'sitekey': '6Ldj67osAAAAABW7uAG8MrNg8uaBrJ7Pqm5KvPjq', // <--- এখানে আপনার সাইট কী দিন
+                        'sitekey': '6Ldj67osAAAAABW7uAG8MrNg8uaBrJ7Pqm5KvPjq', // আপনার দেওয়া কী
                         'callback': function(response) {
                             if(response) {
-                                // ভেরিফিকেশন সফল হলে ক্যাপচা সরিয়ে মেইন কন্টেন্ট দেখানো হবে
                                 document.getElementById('captcha-overlay').classList.add('hidden');
                                 document.getElementById('main-content').classList.remove('hidden');
                             }
@@ -91,7 +120,6 @@
             document.head.appendChild(script);
         }
 
-        // ভাষা পরিবর্তন
         function toggleLanguage() {
             const htmlTag = document.getElementById('main-html');
             const bodyTag = document.getElementById('body-tag');
@@ -111,17 +139,11 @@
                 arElements.forEach(el => el.classList.remove('hidden'));
                 currentLang = 'ar';
             }
-            
-            // ক্যাপচা বক্স রিলোড
             document.getElementById('recaptcha-element').innerHTML = '';
             initCaptcha(currentLang);
         }
 
-        // পেজ লোড হলে প্রথমবার ক্যাপচা চালু করা
-        window.onload = () => {
-            initCaptcha(currentLang);
-        };
+        window.onload = () => { initCaptcha(currentLang); };
     </script>
-
 </body>
 </html>
